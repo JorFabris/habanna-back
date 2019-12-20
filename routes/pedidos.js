@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const pedidosDAO = require('../server');
+const { pedidosDAO } = require('../server');
 const bodyParser = require('body-parser');
 
 // parse applicaction/x-www-form-urlencoded

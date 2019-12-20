@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const prodsDAO = require('../server');
+const { prodsDAO } = require('../server');
 
 const bodyParser = require('body-parser');
 
@@ -18,7 +18,7 @@ app.post('/create/producto', function (req, res) {
             res.send({ 'error': true, 'err': err });
         }
         else {
-            res.send({ 'error': false, 'prods': prods });
+            res.json(prods);
         }
     });
 });
@@ -30,7 +30,20 @@ app.get('/productos', function (req, res) {
             return res.send({ 'error': true, 'err': err });
         }
         else {
-            res.json({ 'error': false, 'prods': prods });
+            res.json(prods);
+        }
+    });
+});
+
+app.delete('/producto', function (req, res) {
+    let prod = req.body;
+
+    prodsDAO.delete(prod, function (err, prod) {
+        if (err) {
+            res.send({ 'error': true, 'err': err });
+        }
+        else {
+            res.json(prod);
         }
     });
 });

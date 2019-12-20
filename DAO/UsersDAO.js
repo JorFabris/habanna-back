@@ -1,15 +1,9 @@
 /* Util para encriptar el password del usuario */
 var bcrypt = require('bcrypt-nodejs');
 
-/**
- * Data Access Object (DAO) para 'users',
- * Debe ser construido con un objeto conectado a la
- * base de datos
- */
+// const { db } = require('../server');
 
 function UserDAO(db){  
-  
-  
   /**
    * Si el constructor es llamado sin el operador 'new',
    * muestra una advertencia y lo llama correctamente.

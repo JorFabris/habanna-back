@@ -21,8 +21,8 @@ function PedidosDAO(db) {
         pedidos.insertOne(pedido, function (err, result) {
             if (err) return callback(err, null);
 
-            console.log('Nueva producto creado');
-            return callback(null, result[0]);
+            console.log('Nueva pedido creado');
+            return callback(null,result.ops[0]);
         });
 
 
@@ -38,7 +38,7 @@ function PedidosDAO(db) {
                 errPeds.msg = "No hay PEDIDOS aún";
                 return callback(errPeds,null);
             }else{
-                // return callback(null,peds);
+                return callback(null,peds);
             }
            
         })

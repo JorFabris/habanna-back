@@ -219,10 +219,14 @@ MongoClient.connect('mongodb://'+mdbconf.host+':'+mdbconf.port+'/'+mdbconf.db,{ 
     // });
 
     socket.on('post-pedidos', function(pedido){
-      console.log("PEDIDO DESDE SOCKET",pedido);
       
-      pedidosDAO.addPedido(pedido);
-      // socket.emit('post-pedido');
+      
+      pedidosDAO.addPedido(pedido,function(err,peds){
+       
+        
+        io.emit('post-pedidos',peds);
+      });
+      // 
     });
 
 

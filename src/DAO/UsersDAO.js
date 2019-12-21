@@ -40,10 +40,9 @@ function UserDAO(db) {
       if (err) {
         let msgError = "Error al obtener Usuarios."
         return callback(msgError, null)
-      } 
-        return callback(null, usuarios);
       }
-    })
+      return callback(null, usuarios);
+    });
   }
 
   this.getById = function (id, callback) {
@@ -53,7 +52,7 @@ function UserDAO(db) {
         return callback(msgError, null)
       }
       return callback(null, usuario);
-    })
+    });
   }
 
   this.update = function (user, callback) {

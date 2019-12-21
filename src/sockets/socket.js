@@ -1,8 +1,8 @@
-const { io } = require('../server');
-const { pedidosDAO } = require('../server');
-const { prodsDAO } = require('../server');
-const { mesasDAO } = require('../server');
-const { usuariosDAO } = require('../server');
+const { io } = require('../../server');
+const { pedidosDAO } = require('../../server');
+const { prodsDAO } = require('../../server');
+const { mesasDAO } = require('../../server');
+const { usuariosDAO } = require('../../server');
 
 io.on('connection', function (socket) {
 

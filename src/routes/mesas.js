@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const { pedidosDAO } = require('../server');
+const { mesasDAO } = require('../../server');
 const bodyParser = require('body-parser');
 
 // parse applicaction/x-www-form-urlencoded
@@ -10,29 +10,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-app.post('/create/pedido', function (req, res) {
-    var pedido = req.body;
-
-    pedidosDAO.addPedido(pedido, function (err, peds) {
+app.post('/create/mesa', function (req, res) {
+    var mesa = req.body;
+    mesasDAO.addMesa(mesa, function (err, mesas) {
         if (err) {
             res.send({ 'error': true, 'err': err });
         }
         else {
-            res.send({ 'error': false, 'prods': peds });
+            res.send({ 'error': false, 'mesas': mesas });
         }
-    })
+    });
 });
 
-app.get('/pedidos', function (req, res) {
-    pedidosDAO.getPedidos(function (err, peds) {
-
+app.get('/mesas', function (req, res) {
+    mesasDAO.getMesa(function (err, mesas) {
+        console.log(mesas);
         if (err) {
             return res.send({ 'error': true, 'err': err });
         }
         else {
-            res.json({ 'error': false, 'peds': peds });
+            res.json({ 'error': false, 'mesas': mesas });
         }
-    })
+    });
 });
+
 
 module.exports = app;

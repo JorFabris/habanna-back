@@ -9,10 +9,10 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 
 // IMPORTACION DE LOS DAO´S
-const userDAO = require('./DAO/UsersDAO').UserDAO;
-const mesaDAO = require('./DAO/MesasDAO').MesasDAO;
-const prodDAO = require('./DAO/ProductosDAO').ProductosDAO;
-const pedidoDAO = require('./DAO/PedidosDAO').PedidosDAO;
+const userDAO = require('./src/DAO/UsersDAO').UserDAO;
+const mesaDAO = require('./src/DAO/MesasDAO').MesasDAO;
+const prodDAO = require('./src/DAO/ProductosDAO').ProductosDAO;
+const pedidoDAO = require('./src/DAO/PedidosDAO').PedidosDAO;
 
 // Para acceder a los parametros de las peticiones POST
 // app.use(bodyParser());
@@ -45,11 +45,11 @@ MongoClient.connect('mongodb://' + mdbconf.host + ':' + mdbconf.port + '/' + mdb
     pedidosDAO
   }
   
-  app.use(require('./routes/index'));
+  app.use(require('./src/routes/index'));
 
   module.exports.io = io;
 
-  require('./sockets/socket');
+  require('./src/sockets/socket');
 
 
   http.listen(3000, function () {

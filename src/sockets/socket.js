@@ -9,19 +9,20 @@ io.on('connection', function (socket) {
     console.log('New user connected');
 
     socket.on('post-pedidos', function (pedido) {
-        pedidosDAO.addPedido(pedido, function (err, peds) {
+        
+        pedidosDAO.post(pedido, function (err, peds) {
             io.emit('post-pedidos', peds);
         });
-        // 
+        
     });
 
     socket.on('get-pedidos', function () {
-        console.log("Pidiendo pedidos");
-        pedidosDAO.getPedidos(function (err, peds) {
+
+        pedidosDAO.getAll(function (err, peds) {
             if (err) return console.log('Error al obtener los pedidos');;
             socket.emit('get-pedidos', peds);
-        })
-    })
+        });
 
+    });
 
 });

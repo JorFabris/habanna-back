@@ -36,7 +36,7 @@ app.get('/usuarios', function (req, res) {
   });
 });
 
-app.get('/usuario/:id', function (req, res) {
+app.get('/usuarios/getById', function (req, res) {
   usersDAO.getById(function (err, user) {
     if (err) {
       return res.send({
@@ -49,23 +49,27 @@ app.get('/usuario/:id', function (req, res) {
   });
 });
 
-app.put('/usuario/:id', function (req, res) {
-  let id = req.params.id
-  user.username = req.body.username;
-  user.password = req.body.password;
-  user.email = req.body.email;
-  user.nombre = req.body.nombre;
-  user.apellido = req.body.apellido;
-  user.role = req.body.role;
-  user.activo = req.body.activo
+app.put('/usuarios', function (req, res) {
+  let user = req.body;
 
-  usersDAO.update(id, user, (err, usuarioDB) => {
-    if (err) {
-      return res.status(400).json({ ok: false, err });
-    }
-    res.json(usuarioDB);
-  })
+  usersDAO.put(user, function (err, userAct) {
+
+      if (err) { return res.status(400).json(err) };
+
+      res.json(userAct);
+  });
 });
 
+app.delete('/usuarios', function (req, res) {
+  let usuario = req.body;
+
+  usersDAO.delete(usuario, function (err, usuario) {
+      if (err) {
+          return res.status(400).json(err)
+      }
+      console.log(`Usuario: "${usuario.nombre}" eliminado!`);
+      res.json(usuario);
+  });
+});
 
 module.exports = app;

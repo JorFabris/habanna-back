@@ -1,51 +1,80 @@
 function MesasDAO(db) {
 
+    let ObjectId = require('mongodb').ObjectID;
+
     if (false == (this instanceof MesasDAO)) {
         console.log('WARNING: UserDAO constructor called without "new" operator');
         return new MesasDAO(db);
     }
 
-    var database = db.db('app_habb');
-    var mesas = database.collection('mesas')
+    let database = db.db('app_habb');
+    let mesas = database.collection('mesas')
+   
+    this.post = function (mesa, callback) {
+        mesas.findOne({ 'descripcion': mesa.numero }, function (err, m) {
+            if (err) return new Error(err);
 
-    this.addMesa = function (mesa, callback) {
+            if (m) {
+                let msgError = 'Esta descripción de Producto ya existe';
+                return callback(msgError, null);
 
-        mesas.findOne({ 'numero': mesa.numero }, function (err, fmesa) {
-            if (err) throw err;
-
-            if (fmesa) {
-                var mesa_existe = new Error('Este numero de mesa ya existe');
-                mesa_existe.msg = "Este numero de mesa ya existe"
-                return callback(mesa_existe, null);
             } else {
-
                 mesas.insertOne(mesa, function (err, result) {
                     if (err) return callback(err, null);
 
-                    console.log('Nueva mesa creada');
+                    console.log('Nueva mesa creado');
                     return callback(null, result[0]);
                 });
             }
-        })
+        });
     }
 
-    this.getMesa = function (callback) {
-
-        var qryOpts = {
-            'sort': [['numero', 'desc']]
-        }
-
-        mesas.find({}, qryOpts).toArray(function (err, mesas) {
-            console.log('MESAS: ', mesas);
+    this.getAll = function (callback) {
+        mesas.find({}).toArray(function (err, mesas) {
             if (err) {
-                var errMesas = new Error('No hay mesas aún');
-                errMesas.msg = "No hay mesas aún";
-                return callback(errMesas, null);
-            } else {
-                return callback(null, mesas);
+                let msgError = new Error('No hay mesas aún');
+                return callback(msgError, null);
             }
+            return callback(null, mesas);
+        });
+    }
+
+    this.getById = function (id, callback) {
+        mesas.findOne({ "_id": ObjectId(id) }, function (err, mesa) {
+            if (err) {
+                let msgError = "No se encontró ningún Producto"
+                return callback(msgError, null)
+            }
+            return callback(null, mesa);
         })
     }
+
+
+    this.put = function (m, callback) {
+        mesas.updateOne(
+            { "_id": ObjectId(m._id) },
+            {
+                $set: {
+                    "numero": m.numero,
+                    "ocupada": m.ocupada,
+                }
+            },
+            { upsert: true },
+            function (err, m) {
+                if (err) throw err;
+                callback(null, m)
+            });
+    }
+
+    this.delete = function (m, callback) {
+        mesas.deleteOne({ "_id": ObjectId(m._id) }, function (err, m) {
+            if (err) throw err;
+            callback(null, m)
+        }
+        );
+    }
+
+
 }
 
 module.exports.MesasDAO = MesasDAO;

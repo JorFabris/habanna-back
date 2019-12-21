@@ -3,36 +3,67 @@ const app = express();
 const { pedidosDAO } = require('../../server');
 const bodyParser = require('body-parser');
 
-// parse applicaction/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// parse application/json
 app.use(bodyParser.json());
 
 
 app.post('/pedidos', function (req, res) {
-    var pedido = req.body;
+    let pedido = req.body;
 
-    pedidosDAO.addPedido(pedido, function (err, peds) {
+    pedidosDAO.post(pedido, function (err, pedidos) {
         if (err) {
-            res.send({ 'error': true, 'err': err });
+            res.send({
+                'error': true,
+                'err': err
+            });
+        } else {
+            res.json(pedidos);
         }
-        else {
-            res.send(peds);
-        }
-    })
+    });
 });
 
 app.get('/pedidos', function (req, res) {
-    pedidosDAO.getPedidos(function (err, peds) {
-
+    pedidosDAO.getAll(function (err, pedidos) {
         if (err) {
-            return res.send({ 'error': true, 'err': err });
+            return res.status(400).json(err)
         }
-        else {
-            res.json(peds);
+        res.json(pedidos);
+    });
+});
+
+app.get('/pedidos/getById', function (req, res) {
+    let id = req.body._id;
+    
+    pedidosDAO.getById(id, function (err, pedido) {
+        if (err) {
+            return res.status(400).json(err)
         }
-    })
+        res.json(pedido);
+    });
+});
+
+app.put('/pedidos', function (req, res) {
+    let pedido = req.body;
+
+    pedidosDAO.put(pedido, function (err, pedidos) {
+
+        if (err) { return res.status(400).json(err) };
+
+        res.json(pedidos);
+    });
+});
+
+app.delete('/pedido', function (req, res) {
+    let pedido = req.body;
+    console.log('pedido',pedido);
+    
+    pedidosDAO.delete(pedido, function (err, pedido) {
+        if (err) {
+            return res.status(400).json(err)
+        }
+        console.log(`Pedido: "${pedido.descripcion}" eliminado!`);
+        res.json(pedido);
+    });
 });
 
 module.exports = app;

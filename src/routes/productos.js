@@ -30,9 +30,9 @@ app.get('/productos', function (req, res) {
     });
 });
 
-app.get('/producto/:id', function (req, res) {
-    let id = req.params.id;
-
+app.get('/productos/getById', function (req, res) {
+    let id = req.body._id;
+    
     prodsDAO.getById(id, function (err, prod) {
         if (err) {
             return res.status(400).json(err)
@@ -41,15 +41,27 @@ app.get('/producto/:id', function (req, res) {
     });
 });
 
-app.delete('/producto', function (req, res) {
+app.put('/productos', function (req, res) {
     let prod = req.body;
 
+    prodsDAO.put(prod, function (err, prods) {
+
+        if (err) { return res.status(400).json(err) };
+
+        res.json(prods);
+    });
+});
+
+app.delete('/producto', function (req, res) {
+    let prod = req.body;
+    console.log('prod',prod);
+    
     prodsDAO.delete(prod, function (err, producto) {
-        if (err) { 
-            return res.status(400).json(err) 
+        if (err) {
+            return res.status(400).json(err)
         }
-        console.log(`Producto: "${prod.descripcion}" eliminado!`);
-        res.json(prod);
+        console.log(`Producto: "${producto.descripcion}" eliminado!`);
+        res.json(producto);
     });
 });
 

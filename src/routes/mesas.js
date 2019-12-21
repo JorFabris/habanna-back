@@ -3,34 +3,64 @@ const app = express();
 const { mesasDAO } = require('../../server');
 const bodyParser = require('body-parser');
 
-// parse applicaction/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// parse application/json
 app.use(bodyParser.json());
 
+app.post('/mesas', function (req, res) {
+    let mesa = req.body;
 
-app.post('/create/mesa', function (req, res) {
-    var mesa = req.body;
-    mesasDAO.addMesa(mesa, function (err, mesas) {
+    mesasDAO.post(mesa, function (err, mesa) {
         if (err) {
-            res.send({ 'error': true, 'err': err });
-        }
-        else {
-            res.send({ 'error': false, 'mesas': mesas });
+            res.send({
+                'error': true,
+                'err': err
+            });
+        } else {
+            res.json(mesa);
         }
     });
 });
 
 app.get('/mesas', function (req, res) {
-    mesasDAO.getMesa(function (err, mesas) {
-        console.log(mesas);
+    mesasDAO.getAll(function (err, mesa) {
         if (err) {
-            return res.send({ 'error': true, 'err': err });
+            return res.status(400).json(err)
         }
-        else {
-            res.json({ 'error': false, 'mesas': mesas });
+        res.json(mesa);
+    });
+});
+
+app.get('/mesas/getById', function (req, res) {
+    let id = req.body._id;
+    
+    mesasDAO.getById(id, function (err, mesa) {
+        if (err) {
+            return res.status(400).json(err)
         }
+        res.json(mesa);
+    });
+});
+
+app.put('/mesas', function (req, res) {
+    let mesa = req.body;
+
+    mesasDAO.put(mesa, function (err, mesa) {
+
+        if (err) { return res.status(400).json(err) };
+
+        res.json(mesa);
+    });
+});
+
+app.delete('/mesa', function (req, res) {
+    let mesa = req.body;
+    
+    mesasDAO.delete(mesa, function (err, mesa) {
+        if (err) {
+            return res.status(400).json(err)
+        }
+        console.log(`Mesa: "${mesa.numero}" eliminada!`);
+        res.json(mesa);
     });
 });
 

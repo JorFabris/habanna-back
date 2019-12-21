@@ -2,21 +2,12 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
-// parse applicaction/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// parse application/json
 app.use(bodyParser.json());
 
-
-app.get('/signup', function (req, res) {
-    res.sendFile(__dirname + '/views/signup.html');
-});
-
-
 app.post('/login', function (req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
+    let username = req.body.username;
+    let password = req.body.password;
 
     usersDAO.validateLogin(username, password, function (err, user) {
         if (err) {
@@ -28,6 +19,5 @@ app.post('/login', function (req, res) {
         }
     });
 });
-
 
 module.exports = app;

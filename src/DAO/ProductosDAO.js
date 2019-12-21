@@ -1,12 +1,14 @@
 function ProductosDAO(db) {
 
+    let ObjectId = require('mongodb').ObjectID;
+
     if (false == (this instanceof ProductosDAO)) {
         console.log('WARNING: UserDAO constructor called without "new" operator');
         return new ProductosDAO(db);
     }
 
-    var database = db.db('app_habb');
-    var productos = database.collection('productos')
+    let database = db.db('app_habb');
+    let productos = database.collection('productos')
 
     this.post = function (producto, callback) {
         productos.findOne({ 'descripcion': producto.descripcion }, function (err, prod) {
@@ -29,18 +31,16 @@ function ProductosDAO(db) {
 
     this.getAll = function (callback) {
         productos.find({}).toArray(function (err, productos) {
-
             if (err) {
                 let msgError = new Error('No hay productos aún');
                 return callback(msgError, null);
             }
             return callback(null, productos);
-
-        })
+        });
     }
 
     this.getById = function (id, callback) {
-        productos.findOne({ '_id': id }, function (err, producto) {
+        productos.findOne({ "_id": ObjectId(id) }, function (err, producto) {
             if (err) {
                 let msgError = "No se encontró ningún Producto"
                 return callback(msgError, null)
@@ -49,13 +49,31 @@ function ProductosDAO(db) {
         })
     }
 
-    this.delete = function (prod, callback) {
-        productos.deleteOne(prod, function (err, prod) {
-            if (err) throw err;
-            callback(null, prod)
-        });
+
+    this.put = function (prod, callback) {
+        productos.updateOne(
+            { "_id": ObjectId(prod._id) },
+            {
+                $set: {
+                    "descripcion": prod.descripcion,
+                    "precio": prod.precio,
+                    "disponible": prod.disponible
+                }
+            },
+            { upsert: true },
+            function (err, prod) {
+                if (err) throw err;
+                callback(null, prod)
+            });
     }
 
+    this.delete = function (prod, callback) {
+        productos.deleteOne({ "_id": ObjectId(prod._id) }, function (err, prod) {
+            if (err) throw err;
+            callback(null, prod)
+        }
+        );
+    }
 
 }
 

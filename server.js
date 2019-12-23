@@ -1,4 +1,5 @@
 /* Librerias necesarias para la aplicación */
+require('./src/config/config');
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -32,7 +33,9 @@ var mdbconf = {
 MongoClient.connect('mongodb://' + mdbconf.host + ':' + mdbconf.port + '/' + mdbconf.db, { useUnifiedTopology: true }, function (err, db) {
 
   if (err) return new Error('Se ha producido un error al conectar la Base de Datos', err);
-    
+
+  console.log('Conectado a la Base de Datos');
+
   var usersDAO = new userDAO(db); // Initialize userDAO
   var mesasDAO = new mesaDAO(db);
   var prodsDAO = new prodDAO(db);
@@ -44,7 +47,7 @@ MongoClient.connect('mongodb://' + mdbconf.host + ':' + mdbconf.port + '/' + mdb
     prodsDAO,
     pedidosDAO
   }
-  
+
   app.use(require('./src/routes/index'));
 
   module.exports.io = io;
@@ -52,8 +55,8 @@ MongoClient.connect('mongodb://' + mdbconf.host + ':' + mdbconf.port + '/' + mdb
   require('./src/sockets/socket');
 
 
-  http.listen(3000, function () {
-    console.log('listening on *:3000');
+  http.listen(process.env.PORT, () => {
+    console.log('listening on *:', process.env.PORT);
   });
 
 });

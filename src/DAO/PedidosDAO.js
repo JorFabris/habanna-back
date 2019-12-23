@@ -63,8 +63,8 @@ function PedidosDAO(db) {
             });
     }
 
-    this.delete = function (ped, callback) {
-        pedidos.deleteOne({ "_id": ObjectId(ped._id) }, function (err, ped) {
+    this.delete = function (id, callback) {
+        pedidos.deleteOne({ "_id": ObjectId(id) }, function (err, ped) {
             if (err) throw err;
             callback(null, ped)
         }

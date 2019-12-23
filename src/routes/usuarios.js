@@ -36,8 +36,10 @@ app.get('/usuarios', function (req, res) {
   });
 });
 
-app.get('/usuarios/getById', function (req, res) {
-  usersDAO.getById(function (err, user) {
+app.get('/usuarios/:id', function (req, res) {
+  let id = req.params.id;
+
+  usersDAO.getById(id, function (err, user) {
     if (err) {
       return res.send({
         'error': true,
@@ -61,9 +63,9 @@ app.put('/usuarios', function (req, res) {
 });
 
 app.delete('/usuarios', function (req, res) {
-  let usuario = req.body;
+  let id = req.params.id;
 
-  usersDAO.delete(usuario, function (err, usuario) {
+  usersDAO.delete(id, function (err, usuario) {
       if (err) {
           return res.status(400).json(err)
       }

@@ -31,8 +31,8 @@ app.get('/pedidos', function (req, res) {
     });
 });
 
-app.get('/pedidos/getById', function (req, res) {
-    let id = req.body._id;
+app.get('/pedidos/:id', function (req, res) {
+    let id = req.params.id;
     
     pedidosDAO.getById(id, function (err, pedido) {
         if (err) {
@@ -53,11 +53,10 @@ app.put('/pedidos', function (req, res) {
     });
 });
 
-app.delete('/pedido', function (req, res) {
-    let pedido = req.body;
-    console.log('pedido',pedido);
+app.delete('/pedidos/:id', function (req, res) {
+    let id = req.params.id;
     
-    pedidosDAO.delete(pedido, function (err, pedido) {
+    pedidosDAO.delete(id, function (err, pedido) {
         if (err) {
             return res.status(400).json(err)
         }

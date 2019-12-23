@@ -67,8 +67,8 @@ function ProductosDAO(db) {
             });
     }
 
-    this.delete = function (prod, callback) {
-        productos.deleteOne({ "_id": ObjectId(prod._id) }, function (err, prod) {
+    this.delete = function (id, callback) {
+        productos.deleteOne({ "_id": ObjectId(id) }, function (err, prod) {
             if (err) throw err;
             callback(null, prod)
         }

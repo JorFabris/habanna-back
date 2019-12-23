@@ -30,8 +30,8 @@ app.get('/productos', function (req, res) {
     });
 });
 
-app.get('/productos/getById', function (req, res) {
-    let id = req.body._id;
+app.get('/productos/:id', function (req, res) {
+    let id = req.params.id;
     
     prodsDAO.getById(id, function (err, prod) {
         if (err) {
@@ -52,11 +52,10 @@ app.put('/productos', function (req, res) {
     });
 });
 
-app.delete('/producto', function (req, res) {
-    let prod = req.body;
-    console.log('prod',prod);
+app.delete('/productos/:id', function (req, res) {
+    let id = req.params.id;
     
-    prodsDAO.delete(prod, function (err, producto) {
+    prodsDAO.delete(id, function (err, producto) {
         if (err) {
             return res.status(400).json(err)
         }

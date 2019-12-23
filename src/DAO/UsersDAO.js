@@ -69,8 +69,8 @@ function UserDAO(db) {
   }
 
 
-  this.delete = function (usuario, callback) {
-    users.deleteOne({ "_id": ObjectId(usuario._id) },
+  this.delete = function (id, callback) {
+    users.deleteOne({ "_id": ObjectId(id) },
       function (err, usuario) {
         if (err) { return res.status(400).json(err) };
         callback(null, usuario)

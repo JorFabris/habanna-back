@@ -9,7 +9,7 @@ function MesasDAO(db) {
 
     let database = db.db('app_habb');
     let mesas = database.collection('mesas')
-   
+
     this.post = function (mesa, callback) {
         mesas.findOne({ 'descripcion': mesa.numero }, function (err, m) {
             if (err) return new Error(err);
@@ -66,12 +66,11 @@ function MesasDAO(db) {
             });
     }
 
-    this.delete = function (m, callback) {
-        mesas.deleteOne({ "_id": ObjectId(m._id) }, function (err, m) {
+    this.delete = function (id, callback) {
+        mesas.deleteOne({ "_id": ObjectId(id) }, function (err, mesa) {
             if (err) throw err;
-            callback(null, m)
-        }
-        );
+            callback(null, mesa)
+        });
     }
 
 

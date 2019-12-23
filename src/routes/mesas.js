@@ -30,8 +30,8 @@ app.get('/mesas', function (req, res) {
     });
 });
 
-app.get('/mesas/getById', function (req, res) {
-    let id = req.body._id;
+app.get('/mesas/:id', function (req, res) {
+    let id = req.params.id;
     
     mesasDAO.getById(id, function (err, mesa) {
         if (err) {
@@ -52,10 +52,10 @@ app.put('/mesas', function (req, res) {
     });
 });
 
-app.delete('/mesa', function (req, res) {
-    let mesa = req.body;
+app.delete('/mesas/:id', function (req, res) {    
+    let id = req.params.id;
     
-    mesasDAO.delete(mesa, function (err, mesa) {
+    mesasDAO.delete(id, function (err, mesa) {
         if (err) {
             return res.status(400).json(err)
         }

@@ -56,7 +56,7 @@ MongoClient.connect('mongodb://' + mdbconf.host + ':' + mdbconf.port + '/' + mdb
 
 
   http.listen(process.env.PORT, () => {
-    console.log('listening on *:', process.env.PORT);
+    console.log('Escuchando en el puerto:', process.env.PORT);
   });
 
 });

@@ -11,13 +11,9 @@ app.post('/productos', function (req, res) {
 
     prodsDAO.post(prod, function (err, prods) {
         if (err) {
-            res.send({
-                'error': true,
-                'err': err
-            });
-        } else {
-            res.json(prods);
+            return res.status(400).json(err)
         }
+        res.json(prods);
     });
 });
 
@@ -30,10 +26,21 @@ app.get('/productos', function (req, res) {
     });
 });
 
-app.get('/productos/:id', function (req, res) {
+app.get('/productos/id/:id', function (req, res) {
     let id = req.params.id;
     
     prodsDAO.getById(id, function (err, prod) {
+        if (err) {
+            return res.status(400).json(err)
+        }
+        res.json(prod);
+    });
+});
+
+app.get('/productos/nombre/:nombre', function (req, res) {
+    let nombre = req.params.nombre;
+
+    prodsDAO.getByNombre(nombre, function (err, prod) {
         if (err) {
             return res.status(400).json(err)
         }
@@ -45,9 +52,9 @@ app.put('/productos', function (req, res) {
     let prod = req.body;
 
     prodsDAO.put(prod, function (err, prods) {
-
-        if (err) { return res.status(400).json(err) };
-
+        if (err) {
+            return res.status(400).json(err)
+        };
         res.json(prods);
     });
 });

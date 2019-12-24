@@ -55,9 +55,9 @@ app.put('/usuarios', function (req, res) {
   let user = req.body;
 
   usersDAO.put(user, function (err, userAct) {
-
-      if (err) { return res.status(400).json(err) };
-
+      if (err) { 
+        return res.status(400).json(err) 
+      };
       res.json(userAct);
   });
 });

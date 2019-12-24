@@ -11,11 +11,11 @@ function ProductosDAO(db) {
     let productos = database.collection('productos')
 
     this.post = function (producto, callback) {
-        productos.findOne({ 'descripcion': producto.descripcion }, function (err, prod) {
+        productos.findOne({ 'nombre': producto.nombre }, function (err, prod) {
             if (err) return new Error(err);
 
             if (prod) {
-                let msgError = 'Esta descripción de Producto ya existe';
+                let msgError = 'Esta nombre de Producto ya existe';
                 return callback(msgError, null);
 
             } else {

@@ -34,7 +34,7 @@ function PedidosDAO(db) {
     this.getById = function (id, callback) {
         pedidos.findOne({ "_id": ObjectId(id) }, function (err, pedido) {
             if (err) {
-                let msgError = "No se encontró ningún Producto"
+                let msgError = "No se encontró ningún pedido"
                 return callback(msgError, null)
             }
             return callback(null, pedido);

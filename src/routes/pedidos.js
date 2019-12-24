@@ -60,7 +60,7 @@ app.delete('/pedidos/:id', function (req, res) {
         if (err) {
             return res.status(400).json(err)
         }
-        console.log(`Pedido: "${pedido.descripcion}" eliminado!`);
+        console.log(`Pedido: "${pedido}" eliminado!`);
         res.json(pedido);
     });
 });

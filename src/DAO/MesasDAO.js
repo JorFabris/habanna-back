@@ -11,11 +11,11 @@ function MesasDAO(db) {
     let mesas = database.collection('mesas')
 
     this.post = function (mesa, callback) {
-        mesas.findOne({ 'descripcion': mesa.numero }, function (err, m) {
+        mesas.findOne({ 'numero': mesa.numero }, function (err, m) {
             if (err) return new Error(err);
 
             if (m) {
-                let msgError = 'Esta descripción de Producto ya existe';
+                let msgError = 'Este numero de mesa ya existe';
                 return callback(msgError, null);
 
             } else {

@@ -62,7 +62,7 @@ app.put('/usuarios', function (req, res) {
   });
 });
 
-app.delete('/usuarios', function (req, res) {
+app.delete('/usuarios/:id', function (req, res) {
   let id = req.params.id;
 
   usersDAO.delete(id, function (err, usuario) {

@@ -39,7 +39,7 @@ function UserDAO(db) {
   }
 
   this.getById = function (id, callback) {
-    users.findOne({ '_id': id }, function (err, usuario) {
+    users.findOne({ '_id': ObjectId(id) }, function (err, usuario) {
       if (err) {
         let msgError = "No se encontró ningún Usuario"
         return callback(msgError, null)

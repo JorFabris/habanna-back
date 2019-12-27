@@ -70,9 +70,10 @@ function ProductosDAO(db) {
             { "_id": ObjectId(prod._id) },
             {
                 $set: {
-                    "descripcion": prod.descripcion,
+                    "nombre": prod.nombre,
                     "precio": prod.precio,
-                    "disponible": prod.disponible
+                    "disponible": prod.disponible,
+                    "tipo": prod.tipo
                 }
             },
             { upsert: true },

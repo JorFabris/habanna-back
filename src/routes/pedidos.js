@@ -31,14 +31,43 @@ app.get('/pedidos', function (req, res) {
     });
 });
 
-app.get('/pedidos/:id', function (req, res) {
+app.get('/pedido/:id', function (req, res) {
     let id = req.params.id;
-    
+
     pedidosDAO.getById(id, function (err, pedido) {
         if (err) {
             return res.status(400).json(err)
         }
         res.json(pedido);
+    });
+});
+
+app.get('/pedidos/pendientes', function (req, res) {
+    pedidosDAO.getPendientes(function (err, pedidos) {
+        if (err) {
+            return res.status(400).json(err)
+        }
+        res.json(pedidos);     
+    });
+});
+
+app.get('/pedidos/entregados', function (req, res) {
+    pedidosDAO.getEntregados(function (err, pedidos) {
+        if (err) {
+            return res.status(400).json(err)
+        }
+        res.json(pedidos);     
+    });
+});
+
+app.get('/pedidos/mozo/:id', function (req, res) {
+    let id = req.params.id;
+
+    pedidosDAO.getPedidoMozo(id, function (err, pedidos) {
+        if (err) {
+            return res.status(400).json(err)
+        }
+        res.json(pedidos);     
     });
 });
 
@@ -53,9 +82,9 @@ app.put('/pedidos', function (req, res) {
     });
 });
 
-app.delete('/pedidos/:id', function (req, res) {
+app.delete('/pedido/:id', function (req, res) {
     let id = req.params.id;
-    
+
     pedidosDAO.delete(id, function (err, pedido) {
         if (err) {
             return res.status(400).json(err)

@@ -30,7 +30,7 @@ app.get('/mesas', function (req, res) {
     });
 });
 
-app.get('/mesas/:id', function (req, res) {
+app.get('/mesa/:id', function (req, res) {
     let id = req.params.id;
     
     mesasDAO.getById(id, function (err, mesa) {
@@ -45,9 +45,9 @@ app.put('/mesas', function (req, res) {
     let mesa = req.body;
 
     mesasDAO.put(mesa, function (err, mesa) {
-
-        if (err) { return res.status(400).json(err) };
-
+        if (err) { 
+            return res.status(400).json(err) 
+        };
         res.json(mesa);
     });
 });
@@ -63,6 +63,5 @@ app.delete('/mesas/:id', function (req, res) {
         res.json(mesa);
     });
 });
-
 
 module.exports = app;

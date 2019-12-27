@@ -18,11 +18,17 @@ io.on('connection', function (socket) {
 
     socket.on('get-pedidos', function () {
 
-        pedidosDAO.getAll(function (err, peds) {
+        pedidosDAO.getPendientes(function (err, peds) {
             if (err) return console.log('Error al obtener los pedidos');;
             socket.emit('get-pedidos', peds);
         });
 
     });
+
+    socket.on('update-pedido', function(pedido){
+        pedidosDAO.put(pedido, function(err,peds){
+            io.emit('update-pedido',peds);
+        })
+    })
 
 });

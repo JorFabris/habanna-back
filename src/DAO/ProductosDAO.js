@@ -30,13 +30,29 @@ function ProductosDAO(db) {
     }
 
     this.getAll = function (callback) {
-        productos.find({}).toArray(function (err, productos) {
-            if (err) {
-                let msgError = new Error('No hay productos aún');
-                return callback(msgError, null);
-            }
-            return callback(null, productos);
-        });
+        productos.find({})
+            .sort({ "hora": 1 })
+            .toArray(function (err, productos) {
+                if (err) {
+                    let msgError = new Error('No hay productos aún');
+                    return callback(msgError, null);
+                }
+                return callback(null, productos);
+            });
+    }
+
+    this.getByNombre = function (nombre, callback) {
+        productos.find({
+            "nombre": { $regex: nombre, $options: 'i' }
+        })
+            .sort({ "hora": 1 })
+            .toArray(function (err, productos) {
+                if (err) {
+                    let msgError = new Error('No hay productos aún');
+                    return callback(msgError, null);
+                }
+                return callback(null, productos);
+            });
     }
 
     this.getById = function (id, callback) {
@@ -48,7 +64,6 @@ function ProductosDAO(db) {
             return callback(null, producto);
         })
     }
-
 
     this.put = function (prod, callback) {
         productos.updateOne(

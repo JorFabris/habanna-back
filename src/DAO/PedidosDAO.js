@@ -17,7 +17,7 @@ function PedidosDAO(db) {
             if (err) return callback(err, null);
 
             console.log('Nueva pedido creado');
-            return callback(null, result[0]);
+            return callback(null, result.ops[0]);
         });
     }
 
@@ -34,16 +34,53 @@ function PedidosDAO(db) {
     this.getById = function (id, callback) {
         pedidos.findOne({ "_id": ObjectId(id) }, function (err, pedido) {
             if (err) {
-                let msgError = "No se encontró ningún pedido"
+                let msgError = "No se encontró ningún Pedido"
                 return callback(msgError, null)
             }
             return callback(null, pedido);
         })
     }
 
+    this.getPendientes = function (callback) {
+        pedidos.find({ "entregado": { $eq: false } })
+            .sort({ "hora": 1 })
+            .toArray(function (err, pedidos) {
+                if (err) {
+                    let msgError = "No se encontró ningún Pedido"
+                    return callback(msgError, null)
+                }
+                return callback(null, pedidos);
+            })
+    }
+
+    this.getEntregados = function (callback) {
+        pedidos.find({ "entregado": { $eq: true } })
+            .sort({ "fecha": 1, "hora": -1 })
+            .limit(50)
+            .toArray(function (err, pedidos) {
+                if (err) {
+                    let msgError = "No se encontró ningún Pedido"
+                    return callback(msgError, null)
+                }
+                return callback(null, pedidos);
+            })
+    }
+        
+    this.getPedidoMozo = function (id, callback) {
+        pedidos.find({ "usuario._id": { $eq: id } })
+            .sort({ "fecha": 1, "hora": -1 })
+            .limit(50)
+            .toArray(function (err, pedidos) {
+                if (err) {
+                    let msgError = "No se encontró ningún Pedido"
+                    return callback(msgError, null)
+                }
+                return callback(null, pedidos);
+            })
+    }
 
     this.put = function (ped, callback) {
-        pedidos.updateOne(
+        pedidos.findOneAndUpdate(
             { "_id": ObjectId(ped._id) },
             {
                 $set: {
@@ -51,15 +88,19 @@ function PedidosDAO(db) {
                     "hora": ped.hora,
                     "apellido_cliente": ped.apellido_cliente,
                     "descripcion": ped.descripcion,
+                    "entregado": ped.entregado,
                     "usuario": ped.usuario,
                     "mesa": ped.mesa,
                     "productos": ped.productos,
                 }
             },
-            { upsert: true },
+            { returnOriginal: false },
             function (err, ped) {
                 if (err) throw err;
-                callback(null, ped)
+                
+                console.log(ped.value);
+                
+                callback(null, ped.value);
             });
     }
 

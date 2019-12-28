@@ -55,7 +55,7 @@ function MesasDAO(db) {
             {
                 $set: {
                     "numero": m.numero,
-                    "ocupada": m.ocupada,
+                    "estado": m.estado,
                 }
             },
             { upsert: true },

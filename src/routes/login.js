@@ -15,7 +15,7 @@ app.post('/login', function (req, res) {
             res.send({ 'error': true, 'err': err });
         }
         else {
-            user.password = null;
+        
             res.send({ 'error': false, 'user': user });
         }
     });

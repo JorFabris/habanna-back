@@ -22,7 +22,7 @@ function PedidosDAO(db) {
     }
 
     this.getAll = function (callback) {
-        pedidos.find({}).toArray(function (err, pedidos) {
+        pedidos.find({}).sort({entregado:1}).toArray(function (err, pedidos) {
             if (err) {
                 let msgError = new Error('No hay pedidos aún');
                 return callback(msgError, null);
@@ -90,6 +90,7 @@ function PedidosDAO(db) {
                     "descripcion": ped.descripcion,
                     "estado": ped.estado,
                     "estado_descrip": ped.estado_descrip,
+                    "entregado": ped.entregado,
                     "usuario": ped.usuario,
                     "mesa": ped.mesa,
                     "productos": ped.productos,
@@ -99,7 +100,7 @@ function PedidosDAO(db) {
             function (err, ped) {
                 if (err) throw err;
                 
-                console.log(ped.value);
+                console.log('Nueva pedido actualizado');
                 
                 callback(null, ped.value);
             });

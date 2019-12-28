@@ -25,6 +25,24 @@ io.on('connection', function (socket) {
 
     });
 
+    socket.on('get-pedidos-all', function () {
+
+        pedidosDAO.getAll(function (err, peds) {
+            if (err) return console.log('Error al obtener los pedidos');;
+            socket.emit('get-pedidos-all', peds);
+        });
+
+    });
+
+    socket.on('get-pedidos-listos', function () {
+
+        pedidosDAO.getEntregados(function (err, peds) {
+            if (err) return console.log('Error al obtener los pedidos');;
+            socket.emit('get-pedidos-listos', peds);
+        });
+
+    });
+
     socket.on('update-pedido', function(pedido){
         pedidosDAO.put(pedido, function(err,peds){
             io.emit('update-pedido',peds);

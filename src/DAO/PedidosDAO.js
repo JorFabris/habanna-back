@@ -2,6 +2,7 @@ function PedidosDAO(db) {
 
     let ObjectId = require('mongodb').ObjectID;
 
+
     if (false == (this instanceof PedidosDAO)) {
         console.log('WARNING: PedidosDAO constructor called without "new" operator');
         return new PedidosDAO(db);
@@ -22,7 +23,7 @@ function PedidosDAO(db) {
     }
 
     this.getAll = function (callback) {
-        pedidos.find({}).sort({entregado:1}).toArray(function (err, pedidos) {
+        pedidos.find({}).sort({estado:-1}).toArray(function (err, pedidos) {
             if (err) {
                 let msgError = new Error('No hay pedidos aún');
                 return callback(msgError, null);
@@ -42,7 +43,7 @@ function PedidosDAO(db) {
     }
 
     this.getPendientes = function (callback) {
-        pedidos.find({ "entregado": { $eq: false } })
+        pedidos.find({ "estado": { $eq: 'Pendiente' } })
             .sort({ "hora": 1 })
             .toArray(function (err, pedidos) {
                 if (err) {
@@ -89,8 +90,6 @@ function PedidosDAO(db) {
                     "apellido_cliente": ped.apellido_cliente,
                     "descripcion": ped.descripcion,
                     "estado": ped.estado,
-                    "estado_descrip": ped.estado_descrip,
-                    "entregado": ped.entregado,
                     "usuario": ped.usuario,
                     "mesa": ped.mesa,
                     "productos": ped.productos,

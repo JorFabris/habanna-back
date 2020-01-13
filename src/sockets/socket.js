@@ -19,7 +19,9 @@ io.on('connection', function (socket) {
     socket.on('get-pedidos', function () {
 
         pedidosDAO.getPendientes(function (err, peds) {
-            if (err) return console.log('Error al obtener los pedidos');;
+            if (err) return console.log('Error al obtener los pedidos');
+            console.log('Obteniendo pendientes');
+            
             socket.emit('get-pedidos', peds);
         });
 
@@ -28,7 +30,9 @@ io.on('connection', function (socket) {
     socket.on('get-pedidos-all', function () {
 
         pedidosDAO.getAll(function (err, peds) {
-            if (err) return console.log('Error al obtener los pedidos');;
+            if (err) return console.log('Error al obtener los pedidos');
+            console.log('Obteniendo todos');
+            
             socket.emit('get-pedidos-all', peds);
         });
 
